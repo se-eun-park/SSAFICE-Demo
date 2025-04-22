@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
 
@@ -12,6 +13,7 @@ export default defineConfig({
         icon: true,
       },
     }),
+    visualizer(),
   ],
   server: {
     port: 8080,
@@ -21,6 +23,14 @@ export default defineConfig({
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
   build: {
-    chunkSizeWarningLimit: 3000,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules/refractor')) {
+            return '@refractor-vendor'
+          }
+        },
+      },
+    },
   },
 })
