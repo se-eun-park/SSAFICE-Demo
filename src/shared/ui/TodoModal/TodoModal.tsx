@@ -1,6 +1,15 @@
-import { Children, isValidElement, cloneElement, Attributes, useState, ChangeEvent } from 'react'
-import MarkdownEditor from '@uiw/react-markdown-editor'
-import MarkdownPreview from '@uiw/react-markdown-preview'
+import {
+  Children,
+  isValidElement,
+  cloneElement,
+  Attributes,
+  useState,
+  ChangeEvent,
+  lazy,
+  Suspense,
+} from 'react'
+const MarkdownEditor = lazy(() => import('@uiw/react-markdown-editor'))
+const MarkdownPreview = lazy(() => import('@uiw/react-markdown-preview'))
 
 import type {
   BaseResponse,
@@ -102,34 +111,40 @@ function TaskDescription({
     case 'CREATE':
       return (
         <div className='mt-spacing-12'>
-          <MarkdownEditor
-            value={description}
-            className='z-30 body-md-medium text-color-text-primary bg-color-bg-primary'
-            height='300px'
-            onChange={onChangeDescription}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <MarkdownEditor
+              value={description}
+              className='z-30 body-md-medium text-color-text-primary bg-color-bg-primary'
+              height='300px'
+              onChange={onChangeDescription}
+            />
+          </Suspense>
         </div>
       )
 
     case 'VIEW':
       return (
         <div className='mt-spacing-12'>
-          <MarkdownPreview
-            source={String(children)}
-            className='max-h-[500px] min-h-[200px] overflow-y-auto body-md-medium'
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <MarkdownPreview
+              source={String(children)}
+              className='max-h-[500px] min-h-[200px] overflow-y-auto body-md-medium'
+            />
+          </Suspense>
         </div>
       )
 
     case 'EDIT':
       return (
         <div className='mt-spacing-12'>
-          <MarkdownEditor
-            value={description}
-            className='body-md-medium text-color-text-primary bg-color-bg-primary'
-            height='300px'
-            onChange={onChangeDescription}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <MarkdownEditor
+              value={description}
+              className='body-md-medium text-color-text-primary bg-color-bg-primary'
+              height='300px'
+              onChange={onChangeDescription}
+            />
+          </Suspense>
         </div>
       )
   }
@@ -253,7 +268,7 @@ function Assignee({
                     className='object-cover object-center w-5 aspect-square rounded-radius-circle'
                   />
                 ) : (
-                  <div className='flex items-center justify-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+                  <div className='flex justify-center items-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                     <p className='body-xs-medium text-color-text-interactive-inverse'>
                       {user.name[0]}
                     </p>
@@ -267,7 +282,7 @@ function Assignee({
           )
         case 'manager':
           return (
-            <div className='relative flex items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
+            <div className='flex relative items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
               <p className='heading-desktop-sm min-w-20 text-color-text-tertiary'>
                 담당자
                 <span className='body-md-medium text-color-text-warning ml-spacing-6'>*</span>
@@ -331,7 +346,7 @@ function Assignee({
                 className='object-cover object-center w-5 aspect-square rounded-radius-circle'
               />
             ) : (
-              <div className='flex items-center justify-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+              <div className='flex justify-center items-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                 <p className='body-xs-medium text-color-text-interactive-inverse'>
                   {user.name && user.name[0]}
                 </p>
@@ -356,7 +371,7 @@ function Assignee({
                 className='object-cover object-center w-5 aspect-square rounded-radius-circle'
               />
             ) : (
-              <div className='flex items-center justify-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+              <div className='flex justify-center items-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                 <p className='body-xs-medium text-color-text-interactive-inverse'>{user.name[0]}</p>
               </div>
             )}
@@ -389,7 +404,7 @@ function Manager({ user, createUser, userType, modaltype }: ManagerResponse) {
                     className='object-cover object-center w-5 aspect-square rounded-radius-circle'
                   />
                 ) : (
-                  <div className='flex items-center justify-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+                  <div className='flex justify-center items-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                     <p className='body-xs-medium text-color-text-interactive-inverse'>
                       {createUser.name[0]}
                     </p>
@@ -417,7 +432,7 @@ function Manager({ user, createUser, userType, modaltype }: ManagerResponse) {
                   className='object-cover object-center w-5 aspect-square rounded-radius-circle'
                 />
               ) : (
-                <div className='flex items-center justify-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+                <div className='flex justify-center items-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                   <p className='body-xs-medium text-color-text-interactive-inverse'>
                     {createUser.name[0]}
                   </p>
@@ -444,7 +459,7 @@ function Manager({ user, createUser, userType, modaltype }: ManagerResponse) {
                   className='object-cover object-center w-5 aspect-square rounded-radius-circle'
                 />
               ) : (
-                <div className='flex items-center justify-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+                <div className='flex justify-center items-center w-5 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                   <p className='body-xs-medium text-color-text-interactive-inverse'>
                     {createUser.name[0]}
                   </p>
@@ -483,7 +498,7 @@ function EndDate({ endDate, setEndDate, modaltype, userType }: EndDateResponse) 
             value={endDate}
             onChange={onChangeEndDate}
             min={formattedDate}
-            className='border outline-none appearance-none body-sm-semibold text-color-text-disabled p-spacing-4 rounded-radius-4 border-color-border-primary'
+            className='border appearance-none outline-none body-sm-semibold text-color-text-disabled p-spacing-4 rounded-radius-4 border-color-border-primary'
           />
         </div>
       )
@@ -504,7 +519,7 @@ function EndDate({ endDate, setEndDate, modaltype, userType }: EndDateResponse) 
             value={endDate}
             onChange={onChangeEndDate}
             min={formattedDate}
-            className='border outline-none appearance-none body-sm-semibold text-color-text-disabled p-spacing-4 rounded-radius-4 border-color-border-primary'
+            className='border appearance-none outline-none body-sm-semibold text-color-text-disabled p-spacing-4 rounded-radius-4 border-color-border-primary'
           />
         </div>
       )
@@ -526,7 +541,7 @@ function ReminderTime({ reminder, setReminder, modaltype }: ReminderResponse) {
   switch (modaltype) {
     case 'CREATE':
       return (
-        <div className='relative flex items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
+        <div className='flex relative items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
           <p className='heading-desktop-sm min-w-20 text-color-text-tertiary'>리마인드</p>
           <div className='flex flex-col gap-y-spacing-10'>
             <button
@@ -567,7 +582,7 @@ function ReminderTime({ reminder, setReminder, modaltype }: ReminderResponse) {
 
     case 'VIEW':
       return (
-        <div className='relative flex items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
+        <div className='flex relative items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
           <p className='heading-desktop-sm min-w-20 text-color-text-tertiary'>리마인드</p>
           <div className='flex flex-col gap-y-spacing-10'>
             <div className='flex flex-col w-full h-full gap-y-spacing-10'>
@@ -596,7 +611,7 @@ function ReminderTime({ reminder, setReminder, modaltype }: ReminderResponse) {
       )
     case 'EDIT':
       return (
-        <div className='relative flex items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
+        <div className='flex relative items-start w-fit h-fit p-spacing-10 gap-x-spacing-10'>
           <p className='heading-desktop-sm min-w-20 text-color-text-tertiary'>리마인드</p>
           <div className='flex flex-col gap-y-spacing-10'>
             <button
@@ -644,7 +659,7 @@ function Required({ isRequired, setIsRequired, modaltype }: RequiredResponse) {
   switch (modaltype) {
     case 'CREATE':
       return (
-        <div className='relative flex items-center w-fit h-fit p-spacing-10 gap-x-spacing-10'>
+        <div className='flex relative items-center w-fit h-fit p-spacing-10 gap-x-spacing-10'>
           <p className='heading-desktop-sm min-w-20 text-color-text-tertiary'>필수 등록</p>
           <RadioGroup onChange={handleOnChange}>
             <Radio
@@ -677,7 +692,7 @@ function Required({ isRequired, setIsRequired, modaltype }: RequiredResponse) {
       )
     case 'VIEW':
       return (
-        <div className='relative flex items-center w-fit h-fit p-spacing-10 gap-x-spacing-10'>
+        <div className='flex relative items-center w-fit h-fit p-spacing-10 gap-x-spacing-10'>
           <p className='heading-desktop-sm min-w-20 text-color-text-tertiary'>필수 여부</p>
 
           {isRequired === 'Y' ? (
@@ -768,7 +783,7 @@ function DetailsContainer({ children, modaltype }: BaseResponse) {
 
 function FlexContainer({ children, modaltype }: BaseResponse) {
   return (
-    <div className='flex items-center justify-between w-full'>
+    <div className='flex justify-between items-center w-full'>
       {Children.map(children, (child) => {
         if (isValidElement(child)) {
           return cloneElement(child, { modaltype } as Attributes)
