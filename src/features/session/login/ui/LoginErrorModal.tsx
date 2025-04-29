@@ -12,7 +12,7 @@ export const LoginErrorModal = ({ errorType, closeRequest }: LoginErrorModalProp
       w-full h-full pt-spacing-32 px-[39px] pb-spacing-64
     '
     >
-      <div className='flex w-full justify-end'>
+      <div className='flex justify-end w-full'>
         <div
           className='flex w-spacing-12 h-spacing-20 hover:cursor-pointer'
           onClick={closeRequest}
@@ -29,8 +29,8 @@ export const LoginErrorModal = ({ errorType, closeRequest }: LoginErrorModalProp
           </div>
         </div>
 
-        <div className='flex w-full h-full items-center whitespace-pre-line'>
-          <div className='flex body-lg-semibold text-color-text-primary text-center'>
+        <div className='flex items-center w-full h-full whitespace-pre-line'>
+          <div className='flex text-center body-lg-semibold text-color-text-primary'>
             {errorType === 'EmailValidFalse' && '유효하지 않은 이메일입니다.'}
             {errorType === 'LoginFail' && `이메일 또는\n비밀번호가 틀렸습니다.`}
           </div>
