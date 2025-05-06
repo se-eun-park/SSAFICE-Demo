@@ -5,21 +5,21 @@ type SessionStoreProps = {
   setIsAuthenticated: (value: boolean) => void
   userId: number | null
   setUserId: (value: number) => void
-  protectRole: string | null
-  setProtectRole: (value: string | null) => void
+  protectRole: string
+  setProtectRole: (value: string) => void
   mattermostSync: string | null
   setMattermostSync: (value: string | null) => void
 }
 
 const useSessionStore = create<SessionStoreProps>((set) => ({
-  isAuthenticated: !!localStorage.getItem('access_token'),
+  isAuthenticated: false,
   setIsAuthenticated: (value) => set({ isAuthenticated: value }),
 
   userId: null,
   setUserId: (value: number) => set({ userId: value }),
 
-  protectRole: null,
-  setProtectRole: (value: string | null) => set({ protectRole: value }),
+  protectRole: 'NONE',
+  setProtectRole: (value: string) => set({ protectRole: value }),
 
   mattermostSync: null,
   setMattermostSync: (value: string | null) => set({ mattermostSync: value }),

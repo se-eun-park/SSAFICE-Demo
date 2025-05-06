@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useLoginStateStore } from '@/entities/session'
+import { useSetLoginStateStore } from '@/entities/session/model/store'
 import { useLandingImageAnimation, useLandingPageModel } from '@/features/landing/index'
 
 //MARK: 공통 CSS
@@ -27,7 +28,8 @@ const selectedBtnClasses: string = `
 
 export const LandingPage = () => {
   const navigate = useNavigate()
-  const isAuthenticated = useLoginStateStore()
+
+  const setIsAuthenticated = useSetLoginStateStore()
 
   const {
     tabLabels,
@@ -39,8 +41,16 @@ export const LandingPage = () => {
   } = useLandingPageModel()
   const animationClass = useLandingImageAnimation(selectedImage)
 
-  const handleOnClickShortcut = () => {
-    isAuthenticated ? navigate('/main') : navigate('/login')
+  useEffect(() => {
+    setIsAuthenticated(false)
+  }, [])
+
+  const handleOnClickTraineeButton = () => {
+    navigate('/trainee')
+  }
+
+  const handleOnClickProButton = () => {
+    navigate('/pro')
   }
 
   return (
@@ -56,21 +66,29 @@ export const LandingPage = () => {
         {/* 헤더 텍스트 영역 */}
         <div className='flex flex-col items-center gap-spacing-16'>
           <div className='flex flex-col items-center gap-spacing-8'>
-            <div className='text-color-text-primary heading-desktop-4xl'>SSAFY 일정관리</div>
+            <div className='text-color-text-primary heading-desktop-3xl'>SSAFY 일정관리</div>
             <div className='text-color-text-primary heading-desktop-3xl'>
               SSAFICE와 함께 시작하기
             </div>
           </div>
-          <div className='text-color-text-primary body-lg-medium'>
+          <div className='text-color-text-primary body-md-medium'>
             SSAFICE는 SSAFY 구성원에게 최적의 일정 관리 서비스를 제공합니다.
           </div>
         </div>
-        <button
-          onClick={handleOnClickShortcut}
-          className='flex text-white px-spacing-24 py-spacing-10 body-lg-medium bg-color-bg-interactive-primary hover:bg-color-bg-interactive-primary-hover rounded-radius-32'
-        >
-          SSAFICE 바로가기
-        </button>
+        <div className='flex gap-spacing-16'>
+          <button
+            onClick={handleOnClickTraineeButton}
+            className='flex text-white px-spacing-24 py-spacing-10 body-lg-medium bg-color-bg-interactive-primary hover:bg-color-bg-interactive-primary-hover rounded-radius-32'
+          >
+            교육생 페이지 체험하기
+          </button>
+          <button
+            onClick={handleOnClickProButton}
+            className='flex text-white px-spacing-24 py-spacing-10 body-lg-medium bg-color-bg-interactive-primary hover:bg-color-bg-interactive-primary-hover rounded-radius-32'
+          >
+            관리자 페이지 체험하기
+          </button>
+        </div>
       </div>
 
       {/* MARK: 화면 하단
@@ -103,25 +121,25 @@ export const LandingPage = () => {
         '
         >
           {/* 탭 설명 영역 */}
-          <div className='flex flex-col items-start justify-center gap-spacing-32'>
+          <div className='flex flex-col justify-center items-start gap-spacing-32'>
             <div className='flex flex-col gap-spacing-16'>
               <div className='text-color-text-primary heading-desktop-2xl'>{selectedTitle}</div>
               <div className='whitespace-pre-wrap text-color-text-primary body-lg-medium'>
                 {selectedContent}
               </div>
             </div>
-            <div className='flex justify-start gap-spacing-12'>
+            {/* <div className='flex justify-start gap-spacing-12'>
               <button
                 onClick={handleOnClickShortcut}
                 className='text-color-text-info body-lg-semibold'
               >
                 SSAFICE 바로가기 -&gt;
               </button>
-            </div>
+            </div> */}
           </div>
 
           {/* 이미지 영역 */}
-          <div className={`w-[600px] h-[400px] overflow-hidden transform ${animationClass}`}>
+          <div className={`overflow-hidden transform w-[600px] h-[400px] ${animationClass}`}>
             <img
               id='slide-target'
               src={selectedImage}
