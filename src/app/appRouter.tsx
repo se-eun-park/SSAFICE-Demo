@@ -1,21 +1,18 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
-import { NotFoundPage } from '@/pages/notFound'
-import { LoginPage } from '@/pages/login'
-import { SignupPage } from '@/pages/signup'
-import { LandingPage } from '@/pages/landing'
-import { MatterMostSyncPage } from '@/pages/mmSync'
-import { MainPage } from '@/pages/main'
+import { lazy, Suspense } from 'react'
+import { createBrowserRouter } from 'react-router-dom'
+
 import { baseLayout } from './layouts/baseLayout'
-import { ProPage } from '@/pages/pro'
-import ProtectedRoute from '@/app/layouts/ProtectedRoute'
-import { SSORedirect, LoginRedirect } from '@/pages/redirect'
 
-type AppRouterProps = {
-  isAuthenticated: boolean
-  role: string | null
-}
+const NotFoundPage = lazy(() =>
+  import('@/pages/notFound').then(({ NotFoundPage }) => ({ default: NotFoundPage })),
+)
+const LandingPage = lazy(() =>
+  import('@/pages/landing').then(({ LandingPage }) => ({ default: LandingPage })),
+)
+const MainPage = lazy(() => import('@/pages/main').then(({ MainPage }) => ({ default: MainPage })))
+const ProPage = lazy(() => import('@/pages/pro').then(({ ProPage }) => ({ default: ProPage })))
 
-export const appRouter = ({ isAuthenticated, role }: AppRouterProps) => {
+export const appRouter = () => {
   return createBrowserRouter([
     {
       path: '/',
@@ -24,42 +21,35 @@ export const appRouter = ({ isAuthenticated, role }: AppRouterProps) => {
       children: [
         {
           index: true,
-          element: isAuthenticated ? <Navigate to='/main' /> : <Navigate to='/landing' />,
+          element: (
+            <Suspense fallback={null}>
+              <LandingPage />
+            </Suspense>
+          ),
         },
         {
           path: 'landing',
-          element: <LandingPage />,
+          element: (
+            <Suspense fallback={null}>
+              <LandingPage />
+            </Suspense>
+          ),
         },
         {
-          path: 'login',
-          element: <LoginPage />,
+          path: 'trainee',
+          element: (
+            <Suspense fallback={null}>
+              <MainPage />
+            </Suspense>
+          ),
         },
         {
-          path: 'signup',
-          element: <SignupPage />,
-        },
-        {
-          path: 'mattermost/sync',
-          element: <MatterMostSyncPage />,
-        },
-        {
-          path: '/sso/providers/ssafy/callback',
-          element: <SSORedirect />,
-        },
-        {
-          path: 'main',
-          element:
-            role === 'ROLE_USER' ? (
-              <ProtectedRoute role='ROLE_USER'>
-                <MainPage />
-              </ProtectedRoute>
-            ) : role === 'ROLE_ADMIN' ? (
-              <ProtectedRoute role='ROLE_ADMIN'>
-                <ProPage />
-              </ProtectedRoute>
-            ) : (
-              <LoginRedirect />
-            ),
+          path: 'pro',
+          element: (
+            <Suspense fallback={null}>
+              <ProPage />
+            </Suspense>
+          ),
         },
       ],
     },

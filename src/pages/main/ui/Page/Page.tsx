@@ -1,38 +1,35 @@
-import { useNavigate } from 'react-router-dom'
-import { SummaryTab } from '@/widgets/summaryTab'
-import { AnnouncementTab } from '@/widgets/announcementTab'
-import { TodoTab } from '@/widgets/todoTab'
-import { useIsTabOpenStore, useIsAnimationStore } from '@/shared/model'
-import { useMattermostSyncStore } from '@/entities/session'
 import { useEffect } from 'react'
-import { SummaryProvider } from '@/shared/model'
+import { useSetLoginStateStore, useSetProtectRoleStore } from '@/entities/session/index.ts'
+// import { SummaryTab } from '@/widgets/summaryTab'
+// import { AnnouncementTab } from '@/widgets/announcementTab'
+// import { TodoTab } from '@/widgets/todoTab'
+// import { useIsTabOpenStore, useIsAnimationStore } from '@/shared/model'
+// import { SummaryProvider } from '@/shared/model'
 
 export const MainPage = () => {
-  const navigate = useNavigate()
-
   //store
-  const isTabOpen = useIsTabOpenStore()
-  const isAnimation = useIsAnimationStore()
-  const mattermostSync = useMattermostSyncStore()
+  const setIsAuthenticated = useSetLoginStateStore()
+  const setProtectRole = useSetProtectRoleStore()
+  // const isTabOpen = useIsTabOpenStore()
+  // const isAnimation = useIsAnimationStore()
 
   useEffect(() => {
-    if (mattermostSync) return
-
-    navigate('/mattermost/sync')
-  }, [mattermostSync])
+    setIsAuthenticated(true)
+    setProtectRole('TRAINEE')
+  }, [])
 
   return (
     <main className='flex flex-col w-full min-h-[calc(100vh+190px)] gap-y-spacing-32 pt-spacing-40'>
-      <SummaryProvider>
+      {/* <SummaryProvider>
         <SummaryTab />
 
         <div
-          className={`flex gap-x-spacing-40 px-spacing-32 ${isAnimation ? ' animate-gapShrink' : ''}`}
+          className={`flex gap-x-spacing-40 px-spacing-32 ${isAnimation ? 'animate-gapShrink' : ''}`}
         >
           {isTabOpen && <AnnouncementTab />}
           <TodoTab />
         </div>
-      </SummaryProvider>
+      </SummaryProvider> */}
     </main>
   )
 }

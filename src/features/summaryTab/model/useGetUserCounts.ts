@@ -1,20 +1,20 @@
 import { instance } from '@/shared/api'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 
-type UserCounts = {
-  noticeCounts: {
-    total: number
-    essential: number
-    enrolled: number
-  }
+// type UserCounts = {
+//   noticeCounts: {
+//     total: number
+//     essential: number
+//     enrolled: number
+//   }
 
-  scheduleCounts: {
-    todoCount: number
-    inProgressCount: number
-    doneCount: number
-  }
-}
+//   scheduleCounts: {
+//     todoCount: number
+//     inProgressCount: number
+//     doneCount: number
+//   }
+// }
 export const useGetUserCounts = (reloadTrigger: boolean) => {
   const { data } = useQuery({
     queryKey: ['summary', reloadTrigger],
