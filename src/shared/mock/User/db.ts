@@ -45,7 +45,7 @@ userDb.PRO.create({
   role: 'PRO',
   email: 'pro1@ssafy.com',
   name: '최프로(교육프로)',
-  profileImage: 'src/assets/png/proProfileImg.png',
+  profileImage: '/img/proProfileImg.png',
 })
 
 export default userDb
