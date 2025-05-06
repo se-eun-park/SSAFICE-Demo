@@ -1,17 +1,11 @@
 import { useRef, useState } from 'react'
 import { DropDown } from '@/shared/ui'
 import { instance } from '@/shared/api'
-import { putUserNickname, postUserProfileImg } from '@/shared/api/User'
+import { putUserNickname } from '@/shared/api/User'
 import { useClickOutsideToggle } from '@/shared/model'
 import { LogoutIcon, MattermostIcon, EditProfileIcon, CameraIcon } from '@/assets/svg'
 import { useNavigate } from 'react-router-dom'
-import {
-  useLoginStateStore,
-  useSetLoginStateStore,
-  useSetProtectRoleStore,
-  useMattermostSyncStore,
-  useSetMattermostSyncStore,
-} from '@/entities/session'
+import { useLoginStateStore, useProtectRoleStore } from '@/entities/session'
 import { useQuery } from '@tanstack/react-query'
 
 export const ClickProfileButton = () => {
@@ -28,33 +22,23 @@ export const ClickProfileButton = () => {
 
   // store
   const isAuthenticated = useLoginStateStore()
-  const setIsAuthenticated = useSetLoginStateStore()
-  const setProtectRole = useSetProtectRoleStore()
-  const mattermostSync = useMattermostSyncStore()
-  const setMattermostSync = useSetMattermostSyncStore()
+  const protectRole = useProtectRoleStore()
 
   // qurey
   const { data } = useQuery({
-    queryKey: ['userData'],
+    queryKey: ['userData', protectRole],
     queryFn: async () => {
-      const response = await instance.get('/api/users/me')
+      const response = await instance.get('/api/user/me')
+
+      const userInfo = response.data[protectRole]
+
       if (response) {
-        const role = response.data.roles[0].roleId
-        const mmSync = response.data.recentMmChannelSyncTime
-
-        if (role) {
-          setProtectRole(role)
-        }
-
-        if (mmSync) {
-          setMattermostSync(mmSync.toString())
-        }
-
-        setMyName(response.data.name)
-        setTitle(response.data.name)
-        setImgUrl(response.data.profileImgUrl)
+        setMyName(userInfo.name)
+        setTitle(userInfo.name)
+        setImgUrl(userInfo.profileImage)
       }
-      return response.data
+
+      return userInfo
     },
     enabled: isAuthenticated,
   })
@@ -116,22 +100,12 @@ export const ClickProfileButton = () => {
     const formData = new FormData()
     formData.append('profileImg', file)
 
-    postUserProfileImg(formData)
-      .then(() => {
-        setImgUrl(URL.createObjectURL(file))
-      })
-      .catch((error) => {
-        console.error(error.message)
-      })
+    setImgUrl(URL.createObjectURL(file))
   }
 
   // 로그아웃 버튼 누를 시
   const handleOnClickLogout = () => {
-    localStorage.removeItem('access_token')
-    setIsAuthenticated(false)
-    setMattermostSync(null)
-    setProtectRole(null)
-    navigate('/login')
+    navigate('/landing')
   }
 
   return (
@@ -144,10 +118,10 @@ export const ClickProfileButton = () => {
           <img
             src={imgUrl}
             alt='내 프로필 사진'
-            className='object-cover object-center rounded-full w-7 aspect-square'
+            className='object-cover object-center rounded-full size-7'
           />
         ) : (
-          <div className='flex items-center justify-center size-7 rounded-radius-circle bg-color-bg-interactive-selected-press'>
+          <div className='flex justify-center items-center size-7 rounded-radius-circle bg-color-bg-interactive-selected-press'>
             <p className='body-sm-medium text-color-text-interactive-inverse'>{myName[0]}</p>
           </div>
         )}
@@ -194,7 +168,7 @@ export const ClickProfileButton = () => {
                   htmlFor='profileImg'
                   className={`relative ${isEditProfile ? 'cursor-pointer' : ''}`}
                 >
-                  <div className='flex items-center justify-center w-10 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
+                  <div className='flex justify-center items-center w-10 aspect-square bg-color-bg-interactive-selected-press rounded-radius-circle'>
                     <p className='body-lg-medium text-color-text-interactive-inverse'>
                       {myName[0]}
                     </p>
@@ -217,7 +191,7 @@ export const ClickProfileButton = () => {
           </DropDown.Image>
 
           <div className='flex flex-col gap-y-spacing-2'>
-            <div className='flex items-center justify-between w-full'>
+            <div className='flex justify-between items-center w-full'>
               <DropDown.Title
                 titleType={isEditTitle ? 'EDIT' : 'VIEW'}
                 title={title}
@@ -234,12 +208,11 @@ export const ClickProfileButton = () => {
             </div>
             <div className='flex items-center gap-x-spacing-8'>
               <DropDown.SubTitle>{data?.email}</DropDown.SubTitle>
-              {mattermostSync && (
-                <div className='flex items-center w-fit gap-x-spacing-2 h-fit bg-color-bg-info pl-spacing-4 pr-spacing-6 py-spacing-2 rounded-radius-circle'>
-                  <MattermostIcon className='size-3' />
-                  <p className='body-xs-medium text-color-text-interactive-inverse'>인증됨</p>
-                </div>
-              )}
+
+              <div className='flex items-center w-fit gap-x-spacing-2 h-fit bg-color-bg-info pl-spacing-4 pr-spacing-6 py-spacing-2 rounded-radius-circle'>
+                <MattermostIcon className='size-3' />
+                <p className='body-xs-medium text-color-text-interactive-inverse'>인증됨</p>
+              </div>
             </div>
           </div>
         </DropDown.Content>

@@ -8,7 +8,7 @@ export const postUserSignup = async (userId: number | null, data: postUserSignup
 }
 
 export const putUserNickname = async (name: string) => {
-  const response = await instance.put(`/api/users/me`, { name })
+  const response = await instance.put(`/api/user/nickname`, { name })
   return response
 }
 
