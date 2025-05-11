@@ -20,6 +20,7 @@ export const MainPage = () => {
 
   return (
     <main className='flex flex-col w-full min-h-[calc(100vh+190px)] gap-y-spacing-32 pt-spacing-40'>
+      <h1>메인 페이지</h1>
       {/* <SummaryProvider>
         <SummaryTab />
 
