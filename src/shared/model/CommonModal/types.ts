@@ -1,4 +1,4 @@
-export type ModalName = 'EmailValidFalse' | 'LoginFail' | 'TraineeTodo' | 'ManagerTodo'
+export type ModalName = 'TraineeTodo' | 'ManagerTodo'
 
 export type ModalElement = {
   modal: JSX.Element
