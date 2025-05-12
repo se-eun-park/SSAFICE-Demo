@@ -1,6 +1,6 @@
 import { factory, primaryKey } from '@mswjs/data'
 
-const userDb = factory({
+const usersDb = factory({
   NONE: {
     userId: primaryKey(Number),
     role: String,
@@ -24,7 +24,7 @@ const userDb = factory({
   },
 })
 
-userDb.NONE.create({
+usersDb.NONE.create({
   userId: 1,
   role: 'NONE',
   email: '',
@@ -32,7 +32,7 @@ userDb.NONE.create({
   profileImage: '',
 })
 
-userDb.TRAINEE.create({
+usersDb.TRAINEE.create({
   userId: 2,
   role: 'TRAINEE',
   email: 'trainee1@ssafy.com',
@@ -40,7 +40,7 @@ userDb.TRAINEE.create({
   profileImage: '',
 })
 
-userDb.PRO.create({
+usersDb.PRO.create({
   userId: 3,
   role: 'PRO',
   email: 'pro1@ssafy.com',
@@ -48,4 +48,4 @@ userDb.PRO.create({
   profileImage: '/img/proProfileImg.png',
 })
 
-export default userDb
+export default usersDb
