@@ -1,24 +1,17 @@
-import { MattermostTeam } from '@/features/ManageMemberTab'
-import { useSortingMattermostChannel } from '@/features/ManageMemberTab/model/useSortingMattermostChannel'
 import { instance } from '@/shared/api'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { MattermostTeam } from '@/features/ManageMemberTab'
 
 export const useGetUserChannels = (): MattermostTeam[] => {
   // 이름은 채널인데 .. mm 팀 리스트를 리턴함
-  const [userChannels, setUserChannels] = useState<MattermostTeam[]>([])
 
   const { data } = useQuery({
-    queryKey: ['mattermostInfo'],
+    queryKey: ['summary', 'userChannels'],
     queryFn: async () => {
-      const response = await instance.get('/api/channels/my')
-      return response.data
+      const { data } = await instance.get('/api/user/channels')
+      return data
     },
   })
 
-  useEffect(() => {
-    if (data) setUserChannels(useSortingMattermostChannel(data))
-  }, [data])
-
-  return userChannels
+  return data
 }
