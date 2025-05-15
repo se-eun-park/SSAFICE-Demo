@@ -104,6 +104,7 @@ export const LandingPage = () => {
             {tabLabels.map((each, index) => (
               <button
                 type='button'
+                key={index}
                 className={index === selectedIndex ? selectedBtnClasses : btnClasses}
                 onClick={() => handleSelectedIndex(index)}
               >
