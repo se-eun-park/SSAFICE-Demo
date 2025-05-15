@@ -50,6 +50,7 @@ export type NoticeSummary = {
 export type UnScheduledDisplay = {
   scheduleId: string
   title: string
+  memo: string
   createdAt: string
   startDateTime: string
   endDateTime: string
@@ -59,7 +60,7 @@ export type UnScheduledDisplay = {
   isEnrollYn: string
   chargeUser: User
   createUser: User
-  noticeSummary: NoticeSummary
+  // noticeSummary: NoticeSummary
 }
 
 // 선택적 파라메터는 테스트 후 필수로 바꾸어 주세요

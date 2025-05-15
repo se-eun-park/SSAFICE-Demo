@@ -8,7 +8,7 @@ export const useSortingUnscheduled = (
 ): UnscheduledListDisplay => {
   const result: any = {}
 
-  datas.forEach((each) => {
+  datas?.forEach((each) => {
     let keyDate: string = '1970-01-01' // 임의 기본값
 
     switch (type) {

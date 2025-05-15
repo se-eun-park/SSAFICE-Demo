@@ -3,45 +3,30 @@ import { UnscheduledDateGroup } from './UnscheduledDateGroup'
 import type { UnscheduledListDisplay } from '@/features/unscheduledTab'
 import { instance } from '@/shared/api'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-export const UnscheduledList = ({
-  page,
-  overflowHandler,
-}: {
-  page: number
-  overflowHandler: () => void
-}) => {
-  const [resultList, setResultList] = useState<UnscheduledListDisplay | null>(null)
-  const {} = useQuery({
-    queryKey: ['unscheduled', page],
+export const UnscheduledList = ({ overflowHandler }: { overflowHandler: () => void }) => {
+  // const [resultList, setResultList] = useState<UnscheduledListDisplay | null>(null)
+  const { data: unregisteredList } = useQuery({
+    queryKey: ['unregisteredSchedule'],
     queryFn: async () => {
-      const response = await instance.get(`/api/schedules/unregistered?page=${page}&size=20`)
-      if (page) {
-        setResultList((prevList) => ({
-          ...prevList,
-          content: [...(prevList?.content || []), ...response.data.content],
-        }))
-      } else {
-        setResultList(response.data)
-      }
-
-      return response.data
+      const { data } = await instance.get('/api/schedule/unregistered')
+      return data
     },
   })
 
   // calculate overflow
   useEffect(() => {
     overflowHandler()
-  }, [resultList])
+  }, [unregisteredList])
 
   const datas: UnscheduledListDisplay = useSortingUnscheduled(
-    resultList?.content || [],
+    unregisteredList || [],
     'by registration',
   )
   return (
-    <div className='w-full h-full '>
-      <div className='relative flex flex-col w-full h-full '>
+    <div className='w-full h-full'>
+      <div className='flex relative flex-col w-full h-full'>
         {Object.entries(datas).map(([date, dailyUnschedules], index) => (
           <UnscheduledDateGroup
             key={date}
@@ -51,7 +36,7 @@ export const UnscheduledList = ({
           />
         ))}
         {Object.entries(datas).length === 0 && (
-          <div className='flex items-center justify-center whitespace-pre-line  text-color-text-primary heading-desktop-md'>
+          <div className='flex justify-center items-center whitespace-pre-line text-color-text-primary heading-desktop-md'>
             등록되지 않은 공지가 없습니다.
           </div>
         )}
