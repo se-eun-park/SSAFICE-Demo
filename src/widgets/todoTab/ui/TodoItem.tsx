@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TodoFlag } from '@/assets/svg'
 // import { type ScheduleItemDisplay } from '@/features/todoTab'
 import { SelectTodoState } from '@/shared/ui'
 import { ScheduleSummaries } from '@/features/manageEachTodoTab/model/types'
-import { SummaryContext, useDateFormatter } from '@/shared/model'
+import { useDateFormatter } from '@/shared/model'
 import { instance } from '@/shared/api'
 import { postEasyTraineeSchedule } from '@/shared/api/Schedule'
 
@@ -40,12 +40,6 @@ export const TodoItem = ({
     if (todo) setFetchedState(todo?.scheduleStatusTypeCd)
   }, [todo])
 
-  // useContext
-  const summaryContext = useContext(SummaryContext)
-  if (!summaryContext) {
-    throw new Error('no Provider Error : SummaryContext, called at TodoItem')
-  }
-
   const handleFetchedState = (value: string) => {
     switch (value) {
       case 'TODO':
@@ -69,7 +63,6 @@ export const TodoItem = ({
         selectedState,
       )
       todoListReload()
-      summaryContext.summaryRefresher()
       backToAddNewTodoButton && backToAddNewTodoButton()
       setNewTodo(undefined) // input 빈 값으로 돌려놓기
     }
@@ -89,7 +82,6 @@ export const TodoItem = ({
           })
           .then(() => {
             todoListReload()
-            summaryContext.summaryRefresher()
           })
 
         console.log(todo)
@@ -123,7 +115,7 @@ export const TodoItem = ({
         {/* 상태 라벨 */}
         {todo ? (
           todo.scheduleStatusTypeCd && (
-            <div className='flex items-center justify-center w-spacing-24 h-spacing-24'>
+            <div className='flex justify-center items-center w-spacing-24 h-spacing-24'>
               <div className='flex w-[14px] h-[18px]'>
                 <TodoFlag type={todo.scheduleStatusTypeCd} />
               </div>
