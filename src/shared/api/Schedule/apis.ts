@@ -41,6 +41,6 @@ export const postManagerSchedule = async ({ createData, userIds }: any) => {
   return response
 }
 
-export const putTraineeSchedule = async (scheduleId: number, data: putTraineeScheduleResponse) => {
-  return await instance.put(`/api/schedules/${scheduleId}`, data).then((res) => res.data)
+export const putTraineeSchedule = async (scheduleId: string, data: putTraineeScheduleResponse) => {
+  return await instance.put(`/api/schedule/trainee/${scheduleId}`, data).then((res) => res.data)
 }

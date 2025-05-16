@@ -17,7 +17,7 @@ type UserCounts = {
 
 export const useGetUserCounts = (): UserCounts => {
   const { data: scheduleCounts } = useQuery({
-    queryKey: ['summary', 'scheduleCounts'],
+    queryKey: ['summaryScheduleCounts'],
     queryFn: async () => {
       const { data } = await instance.get('api/schedule/counts')
       return data

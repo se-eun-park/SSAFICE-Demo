@@ -2,7 +2,6 @@ import { useSortingSchedule } from '@/features/todoTab'
 import { TodoDateGroup } from './TodoDateGroup'
 import { useQuery } from '@tanstack/react-query'
 import { instance } from '@/shared/api'
-import { useDateFormatter } from '@/shared/model'
 import { useEffect, useState } from 'react'
 
 type todoListProps = {
@@ -25,7 +24,7 @@ export const TodoList = ({
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['eachTodos_user', startDate, endDate, selectedSort, reloadTrigger],
+    queryKey: ['eachTodos_trainee'],
     queryFn: async () => {
       const { data } = await instance.get('/api/schedule/trainee')
       return data
