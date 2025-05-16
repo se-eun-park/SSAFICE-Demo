@@ -83,8 +83,10 @@ export const TodoList = ({
         }
 
         {Object.entries(sortedResult).length === 0 && (
-          <div className='flex justify-center items-center whitespace-pre-line text-color-text-primary heading-desktop-md'>
-            등록된 일정이 없습니다.
+          <div className='flex justify-center items-center w-full h-full'>
+            <p className='whitespace-pre-line text-color-text-disabled heading-desktop-md'>
+              등록된 일정이 없습니다.
+            </p>
           </div>
         )}
       </div>

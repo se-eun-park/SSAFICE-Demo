@@ -35,8 +35,10 @@ export const UnscheduledList = ({ overflowHandler }: { overflowHandler: () => vo
           />
         ))}
         {Object.entries(datas).length === 0 && (
-          <div className='flex justify-center items-center whitespace-pre-line text-color-text-primary heading-desktop-md'>
-            등록되지 않은 공지가 없습니다.
+          <div className='flex justify-center items-center w-full h-full'>
+            <p className='whitespace-pre-line text-color-text-disabled heading-desktop-md'>
+              미등록 공지가 없습니다.
+            </p>
           </div>
         )}
       </div>
