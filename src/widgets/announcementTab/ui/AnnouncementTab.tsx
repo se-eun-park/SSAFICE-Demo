@@ -5,7 +5,6 @@ import {
   useSetIsAnimationStore,
   useIsFirstRenderStore,
   useSetIsFirstRenderStore,
-  SummaryContext,
 } from '@/shared/model'
 import {
   SearchBar,
@@ -18,10 +17,9 @@ import { FastLeftArrowIcon } from '@/assets/svg'
 import { AnnouncementList } from './AnnouncementList'
 import { useAnnouncementTabSelectView } from '@/features/announcementTab'
 import { UnscheduledList } from '@/widgets/unscheduledTab'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 export const AnnouncementTab = () => {
-  const [page, setPage] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const [searchValue, setSearchValue] = useState('')
 
@@ -30,11 +28,6 @@ export const AnnouncementTab = () => {
     ref: containerRef,
     isHeight: true,
   })
-
-  // context
-  const summaryContext = useContext(SummaryContext)
-  if (!summaryContext)
-    throw new Error('no Provider Error : SummaryContext, called at AnnouncementTab')
 
   // store
   const isTabOpen = useIsTabOpenStore()
@@ -66,25 +59,6 @@ export const AnnouncementTab = () => {
   const { isAllNoticeView, handleNoticeViewSelect, selectedStyle, unselectedStyle } =
     useAnnouncementTabSelectView()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = containerRef.current
-        // console.log(scrollTop, scrollHeight, clientHeight)
-        if (scrollTop + clientHeight >= scrollHeight) {
-          setPage && setPage((prevPage: number) => prevPage + 1)
-        }
-      }
-    }
-
-    const container = containerRef.current
-    container?.addEventListener('scroll', handleScroll)
-
-    return () => {
-      container?.removeEventListener('scroll', handleScroll)
-    }
-  }, [setPage])
-
   return (
     <TabLayout animation={tabAnimationClass}>
       <TabLayout.Header animation={contentsAnimationClass}>
@@ -92,7 +66,6 @@ export const AnnouncementTab = () => {
           <div
             onClick={() => {
               handleNoticeViewSelect('미등록 공지')
-              setPage(0)
             }}
             className={isAllNoticeView ? unselectedStyle : selectedStyle}
           >
@@ -102,7 +75,6 @@ export const AnnouncementTab = () => {
           <div
             onClick={() => {
               handleNoticeViewSelect('전체 공지')
-              setPage(0)
             }}
             className={isAllNoticeView ? selectedStyle : unselectedStyle}
           >
@@ -117,7 +89,7 @@ export const AnnouncementTab = () => {
       </TabLayout.Header>
 
       <TabLayout.Add animation={contentsAnimationClass}>
-        <div className='pb-spacing-8' onClick={summaryContext.summaryRefresher} role='presentation'>
+        <div className='pb-spacing-8' role='presentation'>
           <RefreshMattermostConnection />
         </div>
         {isAllNoticeView && <SearchBar setSearchValue={setSearchValue} />}
@@ -135,13 +107,9 @@ export const AnnouncementTab = () => {
           `}
         >
           {isAllNoticeView ? (
-            <AnnouncementList
-              page={page}
-              searchValue={searchValue}
-              overflowHandler={overflowCalcTrigger}
-            />
+            <AnnouncementList searchValue={searchValue} overflowHandler={overflowCalcTrigger} />
           ) : (
-            <UnscheduledList page={page} overflowHandler={overflowCalcTrigger} />
+            <UnscheduledList overflowHandler={overflowCalcTrigger} />
           )}
         </div>
       </TabLayout.Content>

@@ -86,6 +86,21 @@ export const ClickProfileButton = () => {
     })
   }
 
+  // 닉네임 변경시 enter 누르면 저장장
+  const handleOnKeyDownSaveTitle = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      if (title === myName) {
+        setIsEditTitle(false)
+        return
+      }
+
+      putUserNickname(title).then(() => {
+        setMyName(title)
+        setIsEditTitle(false)
+      })
+    }
+  }
+
   // 프로필 이미지 업로드(변경)
   const handlePostProfileImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return
@@ -197,6 +212,7 @@ export const ClickProfileButton = () => {
                 title={title}
                 setTitle={setTitle}
                 onClickEvent={handleOnClickSaveTitle}
+                onKeyDownEvent={handleOnKeyDownSaveTitle}
               >
                 {myName}
               </DropDown.Title>

@@ -1,8 +1,9 @@
-import { AnnouncementItemDisplay, createUser } from '@/features/announcementTab'
+import { createUser } from '@/features/announcementTab'
 
 export type ScheduleSummaries = {
   scheduleId: number
   title: string
+  memo: string
   createdAt: string
   startDateTime?: string
   endDateTime?: string
@@ -12,7 +13,7 @@ export type ScheduleSummaries = {
   isEnrollYn: 'Y' | 'N'
   chargeUser: createUser
   createUser: createUser
-  noticeSummary: AnnouncementItemDisplay
+  // noticeSummary: AnnouncementItemDisplay
 }
 export type EachTodoItemDisplay = {
   scheduleSummaries: ScheduleSummaries[]

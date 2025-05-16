@@ -1,11 +1,16 @@
 import { http, HttpResponse } from 'msw'
-import userDb from './db'
+import usersDb from './Db/usersDb'
+import channelsDb from './Db/channelsDb'
 
+//userDb
 const userInfo = {
-  NONE: userDb.NONE.getAll()[0],
-  TRAINEE: userDb.TRAINEE.getAll()[0],
-  PRO: userDb.PRO.getAll()[0],
+  NONE: usersDb.NONE.getAll()[0],
+  TRAINEE: usersDb.TRAINEE.getAll()[0],
+  PRO: usersDb.PRO.getAll()[0],
 }
+
+//channelsDb
+const allTeams = channelsDb.team.getAll()
 
 // API 핸들러
 export const userHandlers = [
@@ -16,5 +21,8 @@ export const userHandlers = [
     const nickname = await request.json()
 
     return HttpResponse.json(nickname, { status: 201 })
+  }),
+  http.get('/api/user/channels', () => {
+    return HttpResponse.json(allTeams)
   }),
 ]

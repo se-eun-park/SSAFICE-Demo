@@ -3,7 +3,7 @@ import { SelectDateRange, SelectTodoState } from '@/shared/ui'
 import { SelectTodoSortCondition } from '@/features/todoTab/ui/SelectTodoSortCondition'
 import { HoverButton, RefreshMattermostConnection } from '@/shared/ui'
 import { AnnouncementList } from '@/widgets/announcementTab'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { ManageTeamTodoList } from './ManageTeamTodoList'
 import { CommonModal } from '@/shared/ui'
 import { useSelectDateRange } from '@/shared/model/useSelectDateRange'
@@ -12,27 +12,6 @@ import { useApiParamFormatter } from '@/shared/model'
 export const ManageTeamTodosTab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const close = () => setIsModalOpen(false)
-  const [page, setPage] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = containerRef.current
-        // console.log(scrollTop, scrollHeight, clientHeight)
-        if (scrollTop + clientHeight >= scrollHeight) {
-          setPage && setPage((prevPage: number) => prevPage + 1)
-        }
-      }
-    }
-
-    const container = containerRef.current
-    container?.addEventListener('scroll', handleScroll)
-
-    return () => {
-      container?.removeEventListener('scroll', handleScroll)
-    }
-  }, [setPage])
 
   // event
   const handleOnClickCalendar = () => {
@@ -61,7 +40,7 @@ export const ManageTeamTodosTab = () => {
           <div className='text-color-text-primary heading-desktop-xl'>전체 공지</div>
           <RefreshMattermostConnection />
           <div className='h-[800px] px-spacing-16 bg-color-bg-tertiary overflow-y-scroll'>
-            <AnnouncementList page={page} searchValue='' />
+            <AnnouncementList searchValue='' />
           </div>
         </div>
 

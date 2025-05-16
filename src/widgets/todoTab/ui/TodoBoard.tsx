@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers'
-
+import { useGetUserCounts } from '@/features/summaryTab'
 import { useLockScrollX } from '@/features/todoTab/model/hooks'
 import { Card, CardColumn } from '@/features/todoTab'
 import { useTraineeScheduleList, CardColumnData } from '@/entities/todoTab'
 import type { TaskResponse } from '@/entities/todoTab'
-import { putTraineeSchedule } from '@/shared/api/Schedule'
+import { useUpdateTraineeSchedule } from '@/entities/todoTab'
 
 type ColumnLengthProps = {
   TODO: number
@@ -15,6 +15,9 @@ type ColumnLengthProps = {
 }
 
 export const TodoBoard = () => {
+  // query
+  const updateTraineeSchedule = useUpdateTraineeSchedule()
+
   // hook
   useLockScrollX('.grid')
 
@@ -26,27 +29,24 @@ export const TodoBoard = () => {
   const sensors = useSensors(pointerSensor)
 
   // state
-  const { data, isLoading } = useTraineeScheduleList(
-    'updatedAt',
-    '2024-01-01T00:00:00',
-    '2100-01-01T00:00:00',
-  )
+  const { data: todoData, isLoading } = useTraineeScheduleList()
+  const { scheduleCounts } = useGetUserCounts()
 
-  const [tasks, setTasks] = useState<TaskResponse[]>(data?.scheduleSummaries)
+  const [tasks, setTasks] = useState<TaskResponse[]>(todoData)
   const [columnLength, setColumnLength] = useState<ColumnLengthProps>({
-    TODO: data?.scheduleStatusCount.todoCount,
-    IN_PROGRESS: data?.scheduleStatusCount.inProgressCount,
-    DONE: data?.scheduleStatusCount.doneCount,
+    TODO: scheduleCounts?.todoCount,
+    IN_PROGRESS: scheduleCounts?.inProgressCount,
+    DONE: scheduleCounts?.doneCount,
   })
 
   useEffect(() => {
-    setTasks(data?.scheduleSummaries)
+    setTasks(todoData)
     setColumnLength({
-      TODO: data?.scheduleStatusCount.todoCount,
-      IN_PROGRESS: data?.scheduleStatusCount.inProgressCount,
-      DONE: data?.scheduleStatusCount.doneCount,
+      TODO: scheduleCounts?.todoCount,
+      IN_PROGRESS: scheduleCounts?.inProgressCount,
+      DONE: scheduleCounts?.doneCount,
     })
-  }, [data, isLoading])
+  }, [todoData, isLoading])
 
   // event
   const handleDragEnd = (event: DragEndEvent) => {
@@ -54,7 +54,7 @@ export const TodoBoard = () => {
 
     if (!over) return
 
-    const taskId = active.id as number
+    const taskId = active.id as string
     const oldStatus = active.data.current?.status
     const newStatus = over.id as TaskResponse['scheduleStatusTypeCd']
 
@@ -82,11 +82,11 @@ export const TodoBoard = () => {
       }
     })
 
-    putTraineeSchedule(taskId, { scheduleStatusTypeCd: newStatus })
+    updateTraineeSchedule.mutate({ scheduleId: taskId, data: { scheduleStatusTypeCd: newStatus } })
   }
 
   return (
-    <div className='grid w-full h-full grid-cols-3 overflow-x-hidden overflow-y-auto overscroll-contain mt-spacing-24 gap-x-spacing-10'>
+    <div className='grid overflow-y-auto overflow-x-hidden overscroll-contain grid-cols-3 w-full h-full mt-spacing-24 gap-x-spacing-10'>
       <DndContext
         onDragEnd={handleDragEnd}
         sensors={sensors}

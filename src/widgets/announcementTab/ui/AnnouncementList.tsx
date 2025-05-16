@@ -1,21 +1,18 @@
 import { AnnouncementDateGroup } from './AnnouncementDateGroup'
 import { useSortingAnnouncement } from '@/features/announcementTab'
-import type { AnnouncementListDisplay } from '@/features/announcementTab'
+import type { UnscheduledListDisplay } from '@/features/unscheduledTab'
 import { instance } from '@/shared/api'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 export const AnnouncementList = ({
-  page,
   searchValue,
   overflowHandler,
 }: {
-  page: number
   searchValue: string
   overflowHandler?: () => void
 }) => {
-  const [resultList, setResultList] = useState<AnnouncementListDisplay | null>(null)
-  const [searchResultList, setSearchResultList] = useState<AnnouncementListDisplay | null>(null)
+  const [searchResultList, setSearchResultList] = useState<UnscheduledListDisplay | null>(null)
   const {} = useQuery({
     queryKey: ['noticeSearch', searchValue],
     queryFn: async () => {
@@ -30,34 +27,25 @@ export const AnnouncementList = ({
     enabled: searchValue !== '',
   })
 
-  const {} = useQuery({
-    queryKey: ['announcements', page],
+  const { data } = useQuery({
+    queryKey: ['allAnnouncements'],
     queryFn: async () => {
-      const response = await instance.get(`/api/notice?page=${page}&size=20`)
-      if (page) {
-        setResultList((prevList) => ({
-          ...prevList,
-          content: [...(prevList?.content || []), ...response.data.content],
-        }))
-      } else {
-        setResultList(response.data)
-      }
-
-      return response.data
+      const { data } = await instance.get('/api/schedule/notice')
+      return data
     },
   })
 
   // calculate overflow
   useEffect(() => {
     if (overflowHandler) overflowHandler()
-  }, [resultList, searchResultList])
+  }, [data])
 
-  const datas: AnnouncementListDisplay = useSortingAnnouncement(
-    (searchResultList?.content?.length ? searchResultList.content : resultList?.content) || [],
+  const datas: UnscheduledListDisplay = useSortingAnnouncement(
+    (searchResultList?.content?.length ? searchResultList.content : data) || [],
   )
   return (
     <div className='w-full h-full'>
-      <div className='relative flex flex-col w-full h-full '>
+      <div className='flex relative flex-col w-full h-full'>
         {Object.entries(datas).map(([date, dailyAnnouncements], index) => (
           <AnnouncementDateGroup
             key={date}
@@ -67,8 +55,10 @@ export const AnnouncementList = ({
           />
         ))}
         {Object.entries(datas).length === 0 && (
-          <div className='flex items-center justify-center whitespace-pre-line  text-color-text-primary heading-desktop-md'>
-            표시할 공지가 없습니다.
+          <div className='flex justify-center items-center w-full h-full'>
+            <p className='whitespace-pre-line text-color-text-disabled heading-desktop-md'>
+              표시할 공지가 없습니다.
+            </p>
           </div>
         )}
       </div>

@@ -1,11 +1,10 @@
 import { useDateFormatter } from '@/shared/model'
-import type { AnnouncementItemDisplay, AnnouncementListDisplay } from './types'
+import type { UnScheduledDisplay } from '@/features/todoTab'
+import type { UnscheduledListDisplay } from '@/features/unscheduledTab'
 
-export const useSortingAnnouncement = (
-  datas: AnnouncementItemDisplay[],
-): AnnouncementListDisplay => {
+export const useSortingAnnouncement = (datas: UnScheduledDisplay[]): UnscheduledListDisplay => {
   // 무작위 순서로 API 답변이 온다고 가정
-  const result: AnnouncementListDisplay = {}
+  const result: UnscheduledListDisplay = {}
 
   // 공지사항을 날짜별로 묶음
   datas.forEach((each) => {
@@ -22,7 +21,7 @@ export const useSortingAnnouncement = (
     result[keyDate].push(each)
   })
 
-  const sortedResult: AnnouncementListDisplay = {}
+  const sortedResult: UnscheduledListDisplay = {}
 
   Object.keys(result)
     .sort((a, b) => {

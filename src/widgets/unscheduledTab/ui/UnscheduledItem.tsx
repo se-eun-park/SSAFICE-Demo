@@ -2,7 +2,7 @@ import { FoldUp, SpreadDown } from '@/assets/svg'
 import type { UnScheduledDisplay } from '@/features/todoTab'
 import { useClickedToggle, useCustomEmojiRemover, useDateFormatter, useHover } from '@/shared/model'
 import Markdown from 'react-markdown'
-import { putTraineeSchedule } from '@/shared/api/Schedule'
+import { useUpdateTraineeSchedule } from '@/entities/todoTab'
 
 type UnscheduledItemProps = {
   unscheduledItem: UnScheduledDisplay
@@ -13,12 +13,13 @@ export const UnscheduledItem = ({ unscheduledItem }: UnscheduledItemProps) => {
 
   // useHover 훅을 사용하여 ref, isHovered, setIsHovered 값 가져오기
   const [hoverRef, isHovered] = useHover<HTMLDivElement>()
+  const updateTraineeSchedule = useUpdateTraineeSchedule()
 
   const handleOnClickAddTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    const scheduleId = Number(unscheduledItem.scheduleId)
-    const data = { enrollYn: 'Y', notice: unscheduledItem.noticeSummary.content }
-    putTraineeSchedule(scheduleId, data)
+    const scheduleId = unscheduledItem.scheduleId
+    const data = { isEnrollYn: 'Y' }
+    updateTraineeSchedule.mutate({ scheduleId, data })
   }
   return (
     <div
@@ -33,12 +34,18 @@ export const UnscheduledItem = ({ unscheduledItem }: UnscheduledItemProps) => {
       >
         <div className='rounded-full w-spacing-40 h-spacing-40 bg-color-bg-disabled aspect-square'>
           {/* 프로필 이미지 넣어 주세요 */}
-          {unscheduledItem.createUser?.profileImgUrl && (
+          {unscheduledItem.createUser?.profileImgUrl ? (
             <img
               src={unscheduledItem.createUser?.profileImgUrl}
-              alt='사진 없음'
+              alt='프로필 사진'
               className='object-cover object-center w-full rounded-full aspect-square'
             />
+          ) : (
+            <div className='flex justify-center items-center w-full rounded-full aspect-square bg-color-bg-interactive-selected-press'>
+              <p className='body-lg-medium text-color-text-interactive-inverse'>
+                {unscheduledItem.createUser?.name[0]}
+              </p>
+            </div>
           )}
         </div>
         <div className='flex flex-col w-full h-full gap-spacing-8'>
@@ -79,7 +86,7 @@ export const UnscheduledItem = ({ unscheduledItem }: UnscheduledItemProps) => {
           </button>
 
           {/* 드롭다운/업 SVG */}
-          <div className='flex items-end self-end justify-end w-spacing-16 h-spacing-16'>
+          <div className='flex justify-end items-end self-end w-spacing-16 h-spacing-16'>
             <div className='w-[7px] h-[3px]'>{isClicked ? <FoldUp /> : <SpreadDown />}</div>
           </div>
         </div>
@@ -88,7 +95,7 @@ export const UnscheduledItem = ({ unscheduledItem }: UnscheduledItemProps) => {
       {isClicked && (
         <div className='flex flex-col pl-spacing-48 pr-spacing-24 pb-spacing-16 text-color-text-primary body-sm-medium'>
           {/* markdown */}
-          <Markdown>{useCustomEmojiRemover(unscheduledItem.noticeSummary.content)}</Markdown>
+          <Markdown>{useCustomEmojiRemover(unscheduledItem.memo)}</Markdown>
         </div>
       )}
     </div>

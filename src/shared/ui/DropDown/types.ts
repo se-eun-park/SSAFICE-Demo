@@ -11,6 +11,7 @@ export type DropDownTitleProps = {
   title?: string
   setTitle?: (title: string) => void
   onClickEvent?: (() => void) | ((event: React.MouseEvent<HTMLButtonElement>) => void)
+  onKeyDownEvent?: (() => void) | ((event: React.KeyboardEvent<HTMLInputElement>) => void)
 }
 
 export type DropDownSubTitleProps = {

@@ -20,6 +20,7 @@ function DropDownTitle({
   title,
   setTitle,
   onClickEvent,
+  onKeyDownEvent,
 }: DropDownTitleProps) {
   const onChangetitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle && setTitle(e.target.value)
@@ -32,19 +33,20 @@ function DropDownTitle({
           <input
             type='text'
             onChange={onChangetitle}
-            className={`body-sm-medium w-[260px] border border-color-border-primary rounded-radius-2 px-spacing-4 focus:outline-none ${color}`}
+            onKeyDown={onKeyDownEvent}
+            className={`border body-sm-medium w-[260px] border-color-border-primary rounded-radius-2 px-spacing-4 focus:outline-none ${color}`}
             value={title}
           />
           <button
             onClick={onClickEvent}
-            className='body-xs-semibold text-color-text-info min-w-max'
+            className='min-w-max body-xs-semibold text-color-text-info'
           >
             저장
           </button>
         </div>
       )
     case 'VIEW':
-      return <h1 className={`body-sm-medium ${color} truncate w-[265px]`}>{children}</h1>
+      return <h1 className={`truncate body-sm-medium ${color} w-[265px]`}>{children}</h1>
   }
 }
 

@@ -33,5 +33,5 @@ export type putTraineeScheduleResponse = {
   scheduleStatusTypeCd?: string
   startDateTime?: string
   endDateTime?: string
-  enrollYn?: string
+  isEnrollYn?: string
 }

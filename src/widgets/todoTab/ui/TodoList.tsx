@@ -2,7 +2,6 @@ import { useSortingSchedule } from '@/features/todoTab'
 import { TodoDateGroup } from './TodoDateGroup'
 import { useQuery } from '@tanstack/react-query'
 import { instance } from '@/shared/api'
-import { useDateFormatter } from '@/shared/model'
 import { useEffect, useState } from 'react'
 
 type todoListProps = {
@@ -25,12 +24,10 @@ export const TodoList = ({
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['eachTodos_user', startDate, endDate, selectedSort, reloadTrigger],
+    queryKey: ['eachTodos_trainee'],
     queryFn: async () => {
-      const { data } = await instance.get(
-        `/api/schedules/my?filterType=${selectedSort}&sort=${selectedSort},asc&start=${useDateFormatter('API REQUEST: start', startDate) as string}&end=${useDateFormatter('API REQUEST: end', endDate) as string}`,
-      )
-      return data.scheduleSummaries
+      const { data } = await instance.get('/api/schedule/trainee')
+      return data
     },
   })
 
@@ -54,8 +51,8 @@ export const TodoList = ({
   )
 
   return (
-    <div className='relative w-full h-full '>
-      <div className='relative flex flex-col w-full h-full '>
+    <div className='relative w-full h-full'>
+      <div className='flex relative flex-col w-full h-full'>
         {/* 등록 순으로 설정된 경우, 오늘 날짜로만(*마감일도 오늘 날짜임) 간편 등록 가능합니다. */}
         {
           <>
@@ -86,8 +83,10 @@ export const TodoList = ({
         }
 
         {Object.entries(sortedResult).length === 0 && (
-          <div className='flex items-center justify-center whitespace-pre-line  text-color-text-primary heading-desktop-md'>
-            등록된 일정이 없습니다.
+          <div className='flex justify-center items-center w-full h-full'>
+            <p className='whitespace-pre-line text-color-text-disabled heading-desktop-md'>
+              등록된 일정이 없습니다.
+            </p>
           </div>
         )}
       </div>
