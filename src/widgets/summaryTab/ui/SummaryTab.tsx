@@ -6,12 +6,7 @@ import {
 } from '@/features/summaryTab'
 
 export const SummaryTab = () => {
-  const noticeCounts = {
-    total: 10,
-    essential: 3,
-    enrolled: 7,
-  }
-  const { scheduleCounts } = useGetUserCounts()
+  const { scheduleCounts, noticeCounts } = useGetUserCounts()
 
   return (
     <section className='flex justify-between items-center w-full bg-color-bg-info-subtle py-spacing-40 px-spacing-128'>

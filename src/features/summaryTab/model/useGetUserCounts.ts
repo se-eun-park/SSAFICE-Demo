@@ -2,11 +2,11 @@ import { instance } from '@/shared/api'
 import { useQuery } from '@tanstack/react-query'
 
 type UserCounts = {
-  // noticeCounts: {
-  //   total: number
-  //   essential: number
-  //   enrolled: number
-  // }
+  noticeCounts: {
+    total: number
+    essential: number
+    enrolled: number
+  }
 
   scheduleCounts: {
     todoCount: number
@@ -16,6 +16,14 @@ type UserCounts = {
 }
 
 export const useGetUserCounts = (): UserCounts => {
+  const { data: noticeCounts } = useQuery({
+    queryKey: ['summaryNoticeCounts'],
+    queryFn: async () => {
+      const { data } = await instance.get('api/notice/counts')
+      return data
+    },
+  })
+
   const { data: scheduleCounts } = useQuery({
     queryKey: ['summaryScheduleCounts'],
     queryFn: async () => {
@@ -25,7 +33,7 @@ export const useGetUserCounts = (): UserCounts => {
   })
 
   return {
-    // noticeCounts: data?.noticeCounts,
+    noticeCounts: noticeCounts,
     scheduleCounts: scheduleCounts,
   }
 }
