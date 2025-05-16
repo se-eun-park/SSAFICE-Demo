@@ -55,7 +55,7 @@ const formatDate = (date: Date) => {
 const endDateTime = (addDays: number) => {
   const endDate = new Date()
   endDate.setDate(endDate.getDate() + addDays)
-
+  endDate.setHours(23, 59, 59)
   return formatDate(endDate)
 }
 
@@ -75,7 +75,7 @@ const createTraineeScheduleData = () => {
     scheduleId: 'aadkvg',
     title: '[오늘마감] 12기 실습코치 모집이 오늘까지 입니다.',
     memo: `마감 기한까지 늦지 않게 제출 바랍니다.
-    
+
     * 기한: ${formatEndDateTime(endDateTime(0)).month}월 ${formatEndDateTime(endDateTime(0)).day}일`,
     createdAt: '2025-05-13T00:00:00',
     startDateTime: '2025-05-13T00:00:00',
