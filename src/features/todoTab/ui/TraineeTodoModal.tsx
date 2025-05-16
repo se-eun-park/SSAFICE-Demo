@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { TraineeTodoFirstElements } from '../model/TraineeTodoFirstElements'
-import { postTraineeSchedule, putTraineeSchedule } from '@/shared/api/Schedule'
+import { postTraineeSchedule } from '@/shared/api/Schedule'
 import { TodoModal } from '@/shared/ui'
 
 type TraineeTodoModalProps = {
@@ -100,7 +100,9 @@ export const TraineeTodoModal = ({
       remindRequests: reminder,
       scheduleStatusTypeCd: selectedState,
     }
-    putTraineeSchedule(scheduleId, editData)
+    // 일정 수정 쿼리 호출
+    // putTraineeSchedule(scheduleId, editData)
+    console.log(editData)
 
     setModalType('VIEW')
   }

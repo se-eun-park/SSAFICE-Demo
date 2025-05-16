@@ -1,4 +1,4 @@
-import { AnnouncementItemDisplay, createUser } from '@/features/announcementTab'
+import { createUser } from '@/features/announcementTab'
 
 export type ScheduleSummaries = {
   scheduleId: number
