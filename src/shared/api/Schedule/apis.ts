@@ -1,12 +1,8 @@
 import { instance } from '@/shared/api'
 import { postScheduleResponse, putTraineeScheduleResponse } from './types'
 
-export const getTraineeScheduleList = async (filterType: string, start: string, end: string) => {
-  return await instance
-    .get(`/api/schedules/my?sort=${filterType},desc`, {
-      params: { filterType, start, end },
-    })
-    .then((res) => res.data)
+export const getTraineeScheduleList = async () => {
+  return await instance.get('/api/schedule/trainee').then((res) => res.data)
 }
 
 export const getTraineeScheduleDetail = async (scheduleId: number) => {

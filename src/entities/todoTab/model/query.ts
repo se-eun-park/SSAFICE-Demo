@@ -7,10 +7,10 @@ import { putTraineeScheduleResponse } from '@/shared/api/Schedule/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 // 교육생 할 일 리스트 조회
-export const useTraineeScheduleList = (filterType: string, start: string, end: string) => {
+export const useTraineeScheduleList = () => {
   return useQuery({
-    queryKey: ['todoData', filterType, start, end],
-    queryFn: () => getTraineeScheduleList(filterType, start, end),
+    queryKey: ['traineeScheduleList'],
+    queryFn: () => getTraineeScheduleList(),
   })
 }
 

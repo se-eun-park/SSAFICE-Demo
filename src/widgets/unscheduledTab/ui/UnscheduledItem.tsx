@@ -2,7 +2,7 @@ import { FoldUp, SpreadDown } from '@/assets/svg'
 import type { UnScheduledDisplay } from '@/features/todoTab'
 import { useClickedToggle, useCustomEmojiRemover, useDateFormatter, useHover } from '@/shared/model'
 import Markdown from 'react-markdown'
-import { useUpdateTraineeSchedule } from '@/entities/todoTab/model/query'
+import { useUpdateTraineeSchedule } from '@/entities/todoTab'
 
 type UnscheduledItemProps = {
   unscheduledItem: UnScheduledDisplay
