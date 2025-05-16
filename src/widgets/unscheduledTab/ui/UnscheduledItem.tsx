@@ -2,7 +2,7 @@ import { FoldUp, SpreadDown } from '@/assets/svg'
 import type { UnScheduledDisplay } from '@/features/todoTab'
 import { useClickedToggle, useCustomEmojiRemover, useDateFormatter, useHover } from '@/shared/model'
 import Markdown from 'react-markdown'
-// import { putTraineeSchedule } from '@/shared/api/Schedule'
+import { useUpdateTraineeSchedule } from '@/entities/todoTab/model/query'
 
 type UnscheduledItemProps = {
   unscheduledItem: UnScheduledDisplay
@@ -13,13 +13,13 @@ export const UnscheduledItem = ({ unscheduledItem }: UnscheduledItemProps) => {
 
   // useHover 훅을 사용하여 ref, isHovered, setIsHovered 값 가져오기
   const [hoverRef, isHovered] = useHover<HTMLDivElement>()
+  const updateTraineeSchedule = useUpdateTraineeSchedule()
 
   const handleOnClickAddTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    console.log(unscheduledItem)
-    // const scheduleId = Number(unscheduledItem.scheduleId)
-    // const data = { enrollYn: 'Y', notice: unscheduledItem.noticeSummary.content }
-    // putTraineeSchedule(scheduleId, data)
+    const scheduleId = unscheduledItem.scheduleId
+    const data = { isEnrollYn: 'Y' }
+    updateTraineeSchedule.mutate({ scheduleId, data })
   }
   return (
     <div
