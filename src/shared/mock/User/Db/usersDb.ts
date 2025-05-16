@@ -36,7 +36,7 @@ usersDb.TRAINEE.create({
   userId: 2,
   role: 'TRAINEE',
   email: 'trainee1@ssafy.com',
-  name: '김교육(교육생)',
+  name: '김교육_11기_서울_6반',
   profileImage: '',
 })
 
