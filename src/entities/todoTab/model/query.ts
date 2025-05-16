@@ -28,6 +28,7 @@ export const useUpdateTraineeSchedule = () => {
       putTraineeSchedule(scheduleId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['unregisteredSchedule'] })
+      queryClient.invalidateQueries({ queryKey: ['summaryNoticeCounts'] })
       queryClient.invalidateQueries({ queryKey: ['summaryScheduleCounts'] })
       queryClient.invalidateQueries({ queryKey: ['eachTodos_trainee'] })
     },
