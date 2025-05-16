@@ -106,8 +106,9 @@ export const TodoTab = () => {
                 />
               )}
             </div>
-          ) : // <TodoBoard />
-          null}
+          ) : (
+            <TodoBoard />
+          )}
         </TabLayout.Content>
       </TabLayout>
       <CommonModal
