@@ -1,11 +1,11 @@
 import { FoldUp, SpreadDown } from '@/assets/svg'
-import type { AnnouncementItemDisplay } from '@/features/announcementTab'
+import type { UnScheduledDisplay } from '@/features/todoTab'
 import { useClickedToggle } from '@/shared/model'
 import { useCustomEmojiRemover, useDateFormatter } from '@/shared/model'
 import Markdown from 'react-markdown'
 
 type AnnouncementItemProps = {
-  announcementItem: AnnouncementItemDisplay
+  announcementItem: UnScheduledDisplay
 }
 export const AnnouncementItem = ({ announcementItem }: AnnouncementItemProps) => {
   const { isClicked, handleIsClicked } = useClickedToggle()
@@ -21,12 +21,18 @@ export const AnnouncementItem = ({ announcementItem }: AnnouncementItemProps) =>
       >
         <div className='rounded-full w-spacing-40 h-spacing-40 bg-color-bg-disabled aspect-square'>
           {/* 프로필 이미지 넣어 주세요 */}
-          {announcementItem?.createUser?.profileImgUrl && (
+          {announcementItem?.createUser?.profileImgUrl ? (
             <img
-              src={announcementItem?.createUser?.profileImgUrl}
-              alt='사진 없음'
+              src={announcementItem.createUser?.profileImgUrl}
+              alt='프로필 사진'
               className='object-cover object-center w-full rounded-full aspect-square'
             />
+          ) : (
+            <div className='flex justify-center items-center w-full rounded-full aspect-square bg-color-bg-interactive-selected-press'>
+              <p className='body-lg-medium text-color-text-interactive-inverse'>
+                {announcementItem.createUser?.name[0]}
+              </p>
+            </div>
           )}
         </div>
         <div className='flex flex-col w-full h-full gap-spacing-8'>
@@ -43,7 +49,7 @@ export const AnnouncementItem = ({ announcementItem }: AnnouncementItemProps) =>
             {announcementItem?.title}
           </div>
         </div>
-        <div className='flex items-end self-end justify-end w-spacing-16 h-spacing-16'>
+        <div className='flex justify-end items-end self-end w-spacing-16 h-spacing-16'>
           {/* 드롭다운/업 SVG */}
           <div className='w-[7px] h-[3px]'>{isClicked ? <FoldUp /> : <SpreadDown />}</div>
         </div>
@@ -53,7 +59,7 @@ export const AnnouncementItem = ({ announcementItem }: AnnouncementItemProps) =>
       {isClicked && (
         <div className='flex flex-col pl-spacing-48 pr-spacing-24 pb-spacing-16 mt-spacing-4 text-color-text-primary body-sm-medium'>
           {/* markdown */}
-          <Markdown>{useCustomEmojiRemover(announcementItem?.content)}</Markdown>
+          <Markdown>{useCustomEmojiRemover(announcementItem?.memo)}</Markdown>
         </div>
       )}
     </div>

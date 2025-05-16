@@ -107,8 +107,7 @@ export const AnnouncementTab = () => {
           `}
         >
           {isAllNoticeView ? (
-            // <AnnouncementList searchValue={searchValue} overflowHandler={overflowCalcTrigger} />
-            <div>전체 공지</div>
+            <AnnouncementList searchValue={searchValue} overflowHandler={overflowCalcTrigger} />
           ) : (
             <UnscheduledList overflowHandler={overflowCalcTrigger} />
           )}
