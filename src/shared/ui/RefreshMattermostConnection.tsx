@@ -7,12 +7,13 @@ const formatDateTime = (dateTimeString: string) => {
   const day = date.getDate()
   const hours = date.getHours()
   const minutes = date.getMinutes()
+  const seconds = date.getSeconds()
 
-  return `${month}월 ${day}일 ${hours}:${minutes.toString().padStart(2, '0')}`
+  return `${month}월 ${day}일 ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
 
 export const RefreshMattermostConnection = () => {
-  const [refreshTime, setRefreshTime] = useState<string>('2025-05-15T16:45:00')
+  const [refreshTime, setRefreshTime] = useState<string>(new Date().toISOString())
 
   const handleButtonClick = () => {
     const newDate = new Date().toISOString()

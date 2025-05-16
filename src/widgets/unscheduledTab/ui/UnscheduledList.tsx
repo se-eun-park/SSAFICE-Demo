@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
 export const UnscheduledList = ({ overflowHandler }: { overflowHandler: () => void }) => {
-  // const [resultList, setResultList] = useState<UnscheduledListDisplay | null>(null)
   const { data: unregisteredList } = useQuery({
     queryKey: ['unregisteredSchedule'],
     queryFn: async () => {
