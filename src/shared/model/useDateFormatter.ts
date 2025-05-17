@@ -54,8 +54,6 @@ export const useDateFormatter = (
         backupCurrentDate.getHours() * 60 -
         backupCurrentDate.getMinutes()
 
-      console.log(changeTimeToMinutes % 60)
-
       if (changeTimeToMinutes / 60 > 1) {
         const hoursDifference = hours24 - backupCurrentDate.getHours()
 
