@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 
 type TraineeTodoFirstElementsProps = {
   modaltype: 'CREATE' | 'VIEW' | 'EDIT'
-  scheduleId: number
+  scheduleId: string
 }
 
 export const TraineeTodoFirstElements = ({
@@ -15,10 +15,13 @@ export const TraineeTodoFirstElements = ({
   const isAuthenticated = useLoginStateStore()
 
   const { data: user } = useQuery({
-    queryKey: ['userData'],
+    queryKey: ['userData', 'TRAINEE'],
     queryFn: async () => {
-      const { data } = await instance.get('/api/users/me')
-      return data
+      const response = await instance.get('/api/user/me')
+
+      const userInfo = response.data['TRAINEE']
+
+      return userInfo
     },
     enabled: isAuthenticated,
   })

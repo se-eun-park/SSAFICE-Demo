@@ -5,8 +5,8 @@ export const getTraineeScheduleList = async () => {
   return await instance.get('/api/schedule/trainee').then((res) => res.data)
 }
 
-export const getTraineeScheduleDetail = async (scheduleId: number) => {
-  return await instance.get(`/api/schedules/${scheduleId}`).then((res) => res.data)
+export const getTraineeScheduleDetail = async (scheduleId: string) => {
+  return await instance.get(`/api/schedule/trainee/${scheduleId}`).then((res) => res.data)
 }
 
 export const postEasyTraineeSchedule = async (

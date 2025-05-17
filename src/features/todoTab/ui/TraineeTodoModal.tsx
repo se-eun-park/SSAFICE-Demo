@@ -6,7 +6,7 @@ import { TodoModal } from '@/shared/ui'
 type TraineeTodoModalProps = {
   closeRequest: () => void
   modaltype: 'CREATE' | 'VIEW' | 'EDIT'
-  scheduleId: number
+  scheduleId: string
 }
 
 export const TraineeTodoModal = ({
