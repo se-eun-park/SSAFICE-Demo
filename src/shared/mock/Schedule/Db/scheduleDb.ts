@@ -47,15 +47,22 @@ const traineeScheduleDb = factory({
   },
 })
 
-// 날짜 포맷팅
+// 한국 시간으로 날짜 포맷팅
 const formatDate = (date: Date) => {
-  return date.toISOString()
+  const seoulDate = new Date(date.getTime() + 9 * 60 * 60 * 1000)
+  const year = seoulDate.getUTCFullYear()
+  const month = String(seoulDate.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(seoulDate.getUTCDate()).padStart(2, '0')
+  const hour = String(seoulDate.getUTCHours()).padStart(2, '0')
+  const minute = String(seoulDate.getUTCMinutes()).padStart(2, '0')
+  const second = String(seoulDate.getUTCSeconds()).padStart(2, '0')
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}`
 }
 
-const endDateTime = (addDays: number) => {
+const endDateTime = (addDays: number, endHour?: number, endMinute?: number) => {
   const endDate = new Date()
+  endDate.setHours(endHour ?? 23, endMinute ?? 59, 59)
   endDate.setDate(endDate.getDate() + addDays)
-  endDate.setHours(23, 59, 59)
   return formatDate(endDate)
 }
 

@@ -31,6 +31,7 @@ export const useDateFormatter = (
   const hours12: number = hours24 % 12 === 0 ? 12 : hours24 % 12
   const ampm: string = hours24 >= 12 ? 'PM' : 'AM'
   const minutes: string = String(date?.getMinutes()).padStart(2, '0')
+  const minutesNum: number = date?.getMinutes()
   // const seconds: string = String(date.getSeconds()).padStart(2, '0')
 
   const getDateDifference = (targetDate: Date): string => {
@@ -47,10 +48,24 @@ export const useDateFormatter = (
     const dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24))
 
     if (dayDifference === 0) {
-      const hoursDifference = hours24 - backupCurrentDate.getHours()
+      const changeTimeToMinutes =
+        hours24 * 60 +
+        minutesNum -
+        backupCurrentDate.getHours() * 60 -
+        backupCurrentDate.getMinutes()
 
-      if (hoursDifference > 0) {
-        return `${hoursDifference}시간 전`
+      console.log(changeTimeToMinutes % 60)
+
+      if (changeTimeToMinutes / 60 > 1) {
+        const hoursDifference = hours24 - backupCurrentDate.getHours()
+
+        if (hoursDifference > 0) {
+          return `${hoursDifference}시간 전`
+        }
+      }
+
+      if (changeTimeToMinutes / 60 < 1 && changeTimeToMinutes % 60 > 0) {
+        return `${changeTimeToMinutes % 60}분 전`
       }
     }
 
