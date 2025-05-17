@@ -26,6 +26,13 @@ export const scheduleHandlers = [
 
     return HttpResponse.json(sheduleList)
   }),
+  http.get('/api/schedule/trainee/:scheduleId', ({ params }) => {
+    const { scheduleId } = params
+    const schedule = traineeScheduleDb.content.findFirst({
+      where: { scheduleId: { equals: scheduleId as string } },
+    })
+    return HttpResponse.json(schedule)
+  }),
   http.get('/api/schedule/unregistered', () => {
     const unregisteredList = traineeScheduleDb.content.findMany({
       where: {

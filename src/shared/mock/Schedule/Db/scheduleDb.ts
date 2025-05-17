@@ -1,4 +1,5 @@
 import { factory, primaryKey } from '@mswjs/data'
+import usersDb from '@/shared/mock/User/Db/usersDb'
 
 const traineeScheduleDb = factory({
   content: {
@@ -24,6 +25,14 @@ const traineeScheduleDb = factory({
       email: String,
       profileImgUrl: String,
     },
+    remindSummarys: [
+      {
+        remindId: Number,
+        remindTypeCd: String,
+        remindDateTime: String,
+      },
+    ] as any,
+
     // noticeSummary: {
     //   noticeId: Number,
     //   title: String,
@@ -92,10 +101,10 @@ const createTraineeScheduleData = () => {
     isEssentialYn: 'Y',
     isEnrollYn: 'Y',
     chargeUser: {
-      userId: 3,
-      name: '최프로(교육프로)',
-      email: 'pro1@ssafy.com',
-      profileImgUrl: '/img/proProfileImg.png',
+      userId: usersDb.TRAINEE.getAll()[0].userId,
+      name: usersDb.TRAINEE.getAll()[0].name,
+      email: usersDb.TRAINEE.getAll()[0].email,
+      profileImgUrl: usersDb.TRAINEE.getAll()[0].profileImage,
     },
     createUser: {
       userId: 3,
@@ -103,6 +112,13 @@ const createTraineeScheduleData = () => {
       email: 'pro1@ssafy.com',
       profileImgUrl: '/img/proProfileImg.png',
     },
+    remindSummarys: [
+      {
+        remindId: 1,
+        remindTypeCd: 'ONCE',
+        remindDateTime: endDateTime(-2, 12, 0),
+      },
+    ],
   })
 
   traineeScheduleDb.content.create({
@@ -115,7 +131,7 @@ const createTraineeScheduleData = () => {
     각 팀의 팀장님은 팀원들의 서류를 취합하시어 반담당프로님께 전달 부탁드립니다.🩷
     
     📌 파일명: 11기 자율 프로젝트 결과물 활용 동의서_지역_팀코드_이름
-    📌 제출 기한: ${formatEndDateTime(endDateTime(4)).month}월 ${formatEndDateTime(endDateTime(4)).day}일 16시까지
+    📌 제출 기한: ${formatEndDateTime(endDateTime(4)).month}월 ${formatEndDateTime(endDateTime(4)).day}일 오후 4시까지
     
     💡 작성 유의점 💡 
     🔹 결과물 세부 목록 내 "서비스명" 반드시 기재
@@ -125,16 +141,16 @@ const createTraineeScheduleData = () => {
     🔹 전체 팀원이 모두 작성`,
     createdAt: '2025-05-14T13:23:00',
     startDateTime: '2025-05-14T16:00:00',
-    endDateTime: endDateTime(4),
+    endDateTime: endDateTime(4, 16, 0),
     scheduleSourceTypeCd: 'TEAM',
     scheduleStatusTypeCd: 'TODO',
     isEssentialYn: 'Y',
     isEnrollYn: 'Y',
     chargeUser: {
-      userId: 3,
-      name: '최프로(교육프로)',
-      email: 'pro1@ssafy.com',
-      profileImgUrl: '/img/proProfileImg.png',
+      userId: usersDb.TRAINEE.getAll()[0].userId,
+      name: usersDb.TRAINEE.getAll()[0].name,
+      email: usersDb.TRAINEE.getAll()[0].email,
+      profileImgUrl: usersDb.TRAINEE.getAll()[0].profileImage,
     },
     createUser: {
       userId: 3,
@@ -142,6 +158,18 @@ const createTraineeScheduleData = () => {
       email: 'pro1@ssafy.com',
       profileImgUrl: '/img/proProfileImg.png',
     },
+    remindSummarys: [
+      {
+        remindId: 1,
+        remindTypeCd: 'DAILY',
+        remindDateTime: endDateTime(0, 9, 0),
+      },
+      {
+        remindId: 2,
+        remindTypeCd: 'ONCE',
+        remindDateTime: endDateTime(4, 15, 0),
+      },
+    ],
   })
 
   // 미등록 공지
@@ -174,6 +202,7 @@ const createTraineeScheduleData = () => {
       email: 'pro1@ssafy.com',
       profileImgUrl: '/img/proProfileImg.png',
     },
+    remindSummarys: [],
   })
 
   // 개인 등록 할 일
@@ -189,17 +218,18 @@ const createTraineeScheduleData = () => {
     isEssentialYn: 'N',
     isEnrollYn: 'Y',
     chargeUser: {
-      userId: 3,
-      name: '최프로(교육프로)',
-      email: 'pro1@ssafy.com',
-      profileImgUrl: '/img/proProfileImg.png',
+      userId: usersDb.TRAINEE.getAll()[0].userId,
+      name: usersDb.TRAINEE.getAll()[0].name,
+      email: usersDb.TRAINEE.getAll()[0].email,
+      profileImgUrl: usersDb.TRAINEE.getAll()[0].profileImage,
     },
     createUser: {
-      userId: 2,
-      name: '김교육_11기_서울_6반',
-      email: 'trainee1@ssafy.com',
-      profileImgUrl: '',
+      userId: usersDb.TRAINEE.getAll()[0].userId,
+      name: usersDb.TRAINEE.getAll()[0].name,
+      email: usersDb.TRAINEE.getAll()[0].email,
+      profileImgUrl: usersDb.TRAINEE.getAll()[0].profileImage,
     },
+    remindSummarys: [],
   })
 }
 
