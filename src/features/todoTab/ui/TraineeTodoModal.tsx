@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { TraineeTodoFirstElements } from '../model/TraineeTodoFirstElements'
 import { postTraineeSchedule } from '@/shared/api/Schedule'
+import { useUpdateTraineeSchedule } from '@/entities/todoTab'
 import { TodoModal } from '@/shared/ui'
 
 type TraineeTodoModalProps = {
@@ -14,6 +15,8 @@ export const TraineeTodoModal = ({
   modaltype,
   scheduleId,
 }: TraineeTodoModalProps) => {
+  const { mutate: updateTraineeSchedule } = useUpdateTraineeSchedule()
+
   const elements = TraineeTodoFirstElements({ modaltype, scheduleId })
 
   const [modalType, setModalType] = useState(modaltype)
@@ -23,6 +26,7 @@ export const TraineeTodoModal = ({
   const [endDate, setEndDate] = useState(elements.endDate)
   const [reminder, setReminder] = useState(elements.remindRequests)
   const [isDisabled, setIsDisabled] = useState(true)
+  const [isOnClickEdit, setIsOnClickEdit] = useState(false)
 
   useEffect(() => {
     if (title) {
@@ -34,7 +38,10 @@ export const TraineeTodoModal = ({
 
   useEffect(() => {
     if (modalType === 'CREATE') return
-
+    if (isOnClickEdit) {
+      setIsOnClickEdit(false)
+      return
+    }
     setTitle(elements.title)
     setDescription(elements.description)
     setSelectedState(elements.selectedState)
@@ -97,12 +104,18 @@ export const TraineeTodoModal = ({
       title: title,
       memo: description,
       endDateTime: endDateTime,
-      remindRequests: reminder,
+      remindSummarys: reminder,
       scheduleStatusTypeCd: selectedState,
     }
-    // 일정 수정 쿼리 호출
-    // putTraineeSchedule(scheduleId, editData)
-    console.log(editData)
+
+    updateTraineeSchedule({ scheduleId, data: editData })
+    setTitle(title)
+    setDescription(description)
+    setEndDate(endDate)
+    setSelectedState(selectedState)
+    setReminder(reminder)
+
+    setIsOnClickEdit(true)
 
     setModalType('VIEW')
   }

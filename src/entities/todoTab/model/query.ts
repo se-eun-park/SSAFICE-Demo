@@ -31,6 +31,7 @@ export const useUpdateTraineeSchedule = () => {
       queryClient.invalidateQueries({ queryKey: ['summaryNoticeCounts'] })
       queryClient.invalidateQueries({ queryKey: ['summaryScheduleCounts'] })
       queryClient.invalidateQueries({ queryKey: ['eachTodos_trainee'] })
+      queryClient.invalidateQueries({ queryKey: ['todoDetailData'] })
     },
   })
 }

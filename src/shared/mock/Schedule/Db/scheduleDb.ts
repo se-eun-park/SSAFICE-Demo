@@ -27,7 +27,6 @@ const traineeScheduleDb = factory({
     },
     remindSummarys: [
       {
-        remindId: Number,
         remindTypeCd: String,
         remindDateTime: String,
       },
@@ -88,11 +87,9 @@ const formatEndDateTime = (endDateTime: string) => {
 // 필수 공지
 const createTraineeScheduleData = () => {
   traineeScheduleDb.content.create({
-    scheduleId: 'aadkvg',
+    scheduleId: 'aadkvgfs',
     title: '[오늘마감] 12기 실습코치 모집이 오늘까지 입니다.',
-    memo: `마감 기한까지 늦지 않게 제출 바랍니다.
-
-    * 기한: ${formatEndDateTime(endDateTime(0)).month}월 ${formatEndDateTime(endDateTime(0)).day}일`,
+    memo: `마감 기한까지 늦지 않게 제출 바랍니다.\n\n기한: ${formatEndDateTime(endDateTime(0)).month}월 ${formatEndDateTime(endDateTime(0)).day}일`,
     createdAt: '2025-05-13T00:00:00',
     startDateTime: '2025-05-13T00:00:00',
     endDateTime: endDateTime(0),
@@ -114,7 +111,6 @@ const createTraineeScheduleData = () => {
     },
     remindSummarys: [
       {
-        remindId: 1,
         remindTypeCd: 'ONCE',
         remindDateTime: endDateTime(-2, 12, 0),
       },
@@ -122,18 +118,16 @@ const createTraineeScheduleData = () => {
   })
 
   traineeScheduleDb.content.create({
-    scheduleId: 'eolfsk',
+    scheduleId: 'eolfskdf',
     title: '[자율 프로젝트 활용동의서 제출안내]',
-    memo: `SSAFY에서 수행한 11기 여러분의 우수한 프로젝트는 
-    우수 사례로 소개되는 등 후배 기수를 위해 활용될 수 있습니다.
+    memo: `SSAFY에서 수행한 11기 여러분의 우수한 프로젝트는 우수 사례로 소개되는 등 후배 기수를 위해 활용될 수 있습니다.
     
-    이에, 사무국에서 프로젝트 활용동의서를 받고 있으니,
-    각 팀의 팀장님은 팀원들의 서류를 취합하시어 반담당프로님께 전달 부탁드립니다.🩷
+    \n이에, 사무국에서 프로젝트 활용동의서를 받고 있으니, 각 팀의 팀장님은 팀원들의 서류를 취합하시어 반담당프로님께 전달 부탁드립니다.🩷
     
     📌 파일명: 11기 자율 프로젝트 결과물 활용 동의서_지역_팀코드_이름
     📌 제출 기한: ${formatEndDateTime(endDateTime(4)).month}월 ${formatEndDateTime(endDateTime(4)).day}일 오후 4시까지
     
-    💡 작성 유의점 💡 
+    💡 작성 유의점 💡
     🔹 결과물 세부 목록 내 "서비스명" 반드시 기재
     🔹 생년월일 기재
     🔹 성명은 정자로 기재
@@ -160,12 +154,10 @@ const createTraineeScheduleData = () => {
     },
     remindSummarys: [
       {
-        remindId: 1,
         remindTypeCd: 'DAILY',
         remindDateTime: endDateTime(0, 9, 0),
       },
       {
-        remindId: 2,
         remindTypeCd: 'ONCE',
         remindDateTime: endDateTime(4, 15, 0),
       },
@@ -176,13 +168,7 @@ const createTraineeScheduleData = () => {
   traineeScheduleDb.content.create({
     scheduleId: 'dkenndie',
     title: '<결선 발표회> 현장참여생 대상 안내 드립니다',
-    memo: `안녕하세요! 오늘 진행될 <결선 발표회> 현장참여생 대상 안내 드립니다 :)
-    * 일시: ${formatEndDateTime(endDateTime(12)).month}/${formatEndDateTime(endDateTime(12)).day} 13:00~17:10(예상)
-    * 좌석: 하단 내 좌석배치표 참고🩷
-    
-    미리 본인 자리(위치) 확인해주시고, 13시까지 꼭 착석해주세요✨
-    ❌18층 음료 반입 금지
-    ⭕뚜껑 달린 생수는 반입 가능`,
+    memo: `#### 안녕하세요! 오늘 진행될 <결선 발표회> 현장참여생 대상 안내 드립니다 :)\n\n * • 일시: ${formatEndDateTime(endDateTime(12)).month}/${formatEndDateTime(endDateTime(12)).day} 13:00~17:10(예상)\n\n * • 좌석: 하단 내 좌석배치표 참고🩷\n\n 미리 본인 자리(위치) 확인해주시고, 13시까지 꼭 착석해주세요✨\n\n ❌18층 음료 반입 금지\n\n ⭕뚜껑 달린 생수는 반입 가능`,
     createdAt: '2025-05-14T00:00:00',
     startDateTime: '2025-05-14T00:00:00',
     endDateTime: endDateTime(12),
@@ -207,7 +193,7 @@ const createTraineeScheduleData = () => {
 
   // 개인 등록 할 일
   traineeScheduleDb.content.create({
-    scheduleId: 'voeoms',
+    scheduleId: 'voeomsed',
     title: 'AI 거버넌스 특강 설문 제출하기',
     memo: `${formatEndDateTime(endDateTime(2)).month}/${formatEndDateTime(endDateTime(2)).day} 오후 5시 전까지 제출하기`,
     createdAt: '2025-05-16T22:50:00',
