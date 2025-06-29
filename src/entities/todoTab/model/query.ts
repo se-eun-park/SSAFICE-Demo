@@ -14,7 +14,7 @@ export const useTraineeScheduleList = () => {
   })
 }
 
-export const useTraineeScheduleDetail = (scheduleId: number) => {
+export const useTraineeScheduleDetail = (scheduleId: string) => {
   return useQuery({
     queryKey: ['todoDetailData', scheduleId],
     queryFn: () => getTraineeScheduleDetail(scheduleId),
@@ -31,6 +31,7 @@ export const useUpdateTraineeSchedule = () => {
       queryClient.invalidateQueries({ queryKey: ['summaryNoticeCounts'] })
       queryClient.invalidateQueries({ queryKey: ['summaryScheduleCounts'] })
       queryClient.invalidateQueries({ queryKey: ['eachTodos_trainee'] })
+      queryClient.invalidateQueries({ queryKey: ['todoDetailData'] })
     },
   })
 }

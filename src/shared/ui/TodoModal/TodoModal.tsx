@@ -96,7 +96,6 @@ function TaskTitle({ children, title, setTitle, modaltype }: TaskTitleResponse) 
   }
 }
 
-// 스타일 커스텀 필요 -> 텍스트가 안바뀌어요
 function TaskDescription({
   children,
   description,
@@ -111,13 +110,16 @@ function TaskDescription({
     case 'CREATE':
       return (
         <div className='mt-spacing-12'>
-          <Suspense fallback={<div>Loading...</div>}>
-            <MarkdownEditor
-              value={description}
-              className='z-30 body-md-medium text-color-text-primary bg-color-bg-primary'
-              height='300px'
-              onChange={onChangeDescription}
-            />
+          <Suspense fallback={null}>
+            <div data-color-mode='light'>
+              <MarkdownEditor
+                value={description}
+                theme='light'
+                className='z-30 body-md-medium text-color-text-primary bg-color-bg-primary'
+                height='300px'
+                onChange={onChangeDescription}
+              />
+            </div>
           </Suspense>
         </div>
       )
@@ -125,9 +127,12 @@ function TaskDescription({
     case 'VIEW':
       return (
         <div className='mt-spacing-12'>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={null}>
             <MarkdownPreview
               source={String(children)}
+              wrapperElement={{
+                'data-color-mode': 'light',
+              }}
               className='max-h-[500px] min-h-[200px] overflow-y-auto body-md-medium'
             />
           </Suspense>
@@ -137,13 +142,16 @@ function TaskDescription({
     case 'EDIT':
       return (
         <div className='mt-spacing-12'>
-          <Suspense fallback={<div>Loading...</div>}>
-            <MarkdownEditor
-              value={description}
-              className='body-md-medium text-color-text-primary bg-color-bg-primary'
-              height='300px'
-              onChange={onChangeDescription}
-            />
+          <Suspense fallback={null}>
+            <div data-color-mode='light'>
+              <MarkdownEditor
+                value={description}
+                theme='light'
+                className='body-md-medium text-color-text-primary bg-color-bg-primary'
+                height='300px'
+                onChange={onChangeDescription}
+              />
+            </div>
           </Suspense>
         </div>
       )

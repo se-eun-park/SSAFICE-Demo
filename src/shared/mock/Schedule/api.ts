@@ -26,6 +26,13 @@ export const scheduleHandlers = [
 
     return HttpResponse.json(sheduleList)
   }),
+  http.get('/api/schedule/trainee/:scheduleId', ({ params }) => {
+    const { scheduleId } = params
+    const schedule = traineeScheduleDb.content.findFirst({
+      where: { scheduleId: { equals: scheduleId as string } },
+    })
+    return HttpResponse.json(schedule)
+  }),
   http.get('/api/schedule/unregistered', () => {
     const unregisteredList = traineeScheduleDb.content.findMany({
       where: {
@@ -69,6 +76,10 @@ export const scheduleHandlers = [
       }
     })
 
+    if (body.remindSummarys !== undefined) {
+      updateData['remindSummarys'] = [...body.remindSummarys]
+    }
+
     traineeScheduleDb.content.update({
       where: { scheduleId: { equals: scheduleId as string } },
       data: updateData,
@@ -78,31 +89,5 @@ export const scheduleHandlers = [
       success: true,
       data: { id: scheduleId, updated: updateData },
     })
-  }),
-
-  // 공지
-  http.get('api/notice/counts', () => {
-    const noticeCounts = {
-      total: traineeScheduleDb.content
-        .getAll()
-        .filter((item) => item.scheduleSourceTypeCd !== 'PERSONAL').length,
-      essential: traineeScheduleDb.content
-        .getAll()
-        .filter((item) => item.scheduleSourceTypeCd !== 'PERSONAL' && item.isEssentialYn === 'Y')
-        .length,
-      enrolled: traineeScheduleDb.content
-        .getAll()
-        .filter((item) => item.scheduleSourceTypeCd !== 'PERSONAL' && item.isEnrollYn === 'Y')
-        .length,
-    }
-
-    return HttpResponse.json(noticeCounts)
-  }),
-  http.get('/api/schedule/notice', () => {
-    const noticeList = traineeScheduleDb.content.findMany({
-      where: { scheduleSourceTypeCd: { notEquals: 'PERSONAL' } },
-    })
-
-    return HttpResponse.json(noticeList)
   }),
 ]

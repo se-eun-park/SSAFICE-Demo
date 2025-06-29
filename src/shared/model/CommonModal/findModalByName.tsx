@@ -5,7 +5,7 @@ const TraineeTodoModal = React.lazy(() =>
   import('@/features/todoTab').then((module) => ({
     default: (props: {
       modaltype: 'CREATE' | 'VIEW' | 'EDIT'
-      scheduleId: number
+      scheduleId: string
       closeRequest: () => void
     }) => <module.TraineeTodoModal {...props} />,
   })),
@@ -32,7 +32,7 @@ export const findModalByName = (
   const ModalList: Record<ModalName, ModalElement> = {
     TraineeTodo: {
       modal: (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={null}>
           <TraineeTodoModal
             modaltype={props.modaltype}
             scheduleId={props.scheduleId}
@@ -47,7 +47,7 @@ export const findModalByName = (
     },
     ManagerTodo: {
       modal: (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={null}>
           <ManagerTodoModal
             modaltype={props.modaltype}
             manageType={props.manageType}
